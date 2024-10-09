@@ -33,11 +33,11 @@
                                 <buttonConfiguration key="configuration" style="gray" title="Module A"/>
                                 <connections>
                                     <action selector="moduleAButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L99-sn-kQQ"/>
-                                    <segue destination="NHu-GX-x17" kind="show" id="4Y6-IJ-LUP"/>
+                                    <segue destination="NHu-GX-x17" kind="show" id="u2h-3E-osH"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <viewLayoutGuide key="safeArea" id="fqX-yt-LUG"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="4e7-WA-zzL"/>
@@ -49,18 +49,28 @@
         <!--ModuleA View Controller-->
         <scene sceneID="PBE-IL-Jkd">
             <objects>
-                <viewController id="NHu-GX-x17" customClass="ModuleAViewController" sceneMemberID="viewController">
+                <viewController id="NHu-GX-x17" customClass="ModuleAViewController" customModule="Lab2_MobileApps" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cpG-HS-WaH">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="Z8g-yD-sn5"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ff2-R6-CuZ">
+                                <rect key="frame" x="16" y="103" width="361" height="452"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="qkn-mb-qh8"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="6Gk-Sw-r5X"/>
+                    <connections>
+                        <outlet property="userView" destination="ff2-R6-CuZ" id="3OB-mC-yoK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nul-Wy-EMu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-605" y="325"/>
+            <point key="canvasLocation" x="-605.3435114503817" y="324.64788732394368"/>
         </scene>
         <!--ModuleB View Controller-->
         <scene sceneID="TAO-RA-GI6">
@@ -69,14 +79,48 @@
                     <view key="view" contentMode="scaleToFill" id="vlw-Kf-bmO">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="IRQ-e5-vaO"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="The slider below controls a played frequency between 17,000 and 20,000 Hz." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEJ-N9-PQd">
+                                <rect key="frame" x="15.426008968608812" y="606.00000000002831" width="361" height="98.000000000023647"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="18500" minValue="17000" maxValue="20000" translatesAutoresizingMaskIntoConstraints="NO" id="Tza-yG-qNp">
+                                <rect key="frame" x="14" y="712" width="365" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="sliderF:" destination="UL8-zI-BaK" eventType="valueChanged" id="r00-PB-Erz"/>
+                                </connections>
+                            </slider>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a0V-82-Nmz">
+                                <rect key="frame" x="16" y="103" width="361" height="454"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="akL-1M-jyY">
+                                        <rect key="frame" x="8" y="8" width="345" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="l74-pt-u8U"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="K6W-cs-ECv"/>
+                    <connections>
+                        <outlet property="labelF" destination="akL-1M-jyY" id="qer-2v-hyv"/>
+                        <outlet property="userView" destination="a0V-82-Nmz" id="dWi-vb-aIN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ls-Gd-Wf7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="210" y="325"/>
+            <point key="canvasLocation" x="209.92366412213741" y="324.64788732394368"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WBx-Yq-p09">
@@ -98,6 +142,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

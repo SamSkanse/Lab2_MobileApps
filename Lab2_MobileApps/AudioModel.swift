@@ -22,6 +22,7 @@ class AudioModel {
     lazy var samplingRate:Int = {
         return Int(self.audioManager!.samplingRate)
     }()
+    var sineFrequency:Float = 300.0
     
     // MARK: Public Methods
     init(buffer_size:Int) {
@@ -57,6 +58,8 @@ class AudioModel {
     func pause(){
         if let manager = self.audioManager{
             manager.pause()
+            manager.inputBlock = nil
+            manager.outputBlock = nil
         }
     }
     
