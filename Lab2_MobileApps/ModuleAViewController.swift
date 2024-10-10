@@ -27,7 +27,7 @@ class ModuleAViewController: UIViewController {
     }
 
     let audio = AudioModel(buffer_size: AudioConstants.AUDIO_BUFFER_SIZE)
-    lazy var graph: MetalGraph? = {
+    lazy var graph:MetalGraph? = {
         return MetalGraph(userView: self.userView)
     }()
     
@@ -41,8 +41,14 @@ class ModuleAViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let graph = self.graph {
+        if let graph = self.graph{
             graph.setBackgroundColor(r: 0, g: 0, b: 0, a: 1)
+            
+            // add in graphs for display
+            // note that we need to normalize the scale of this graph
+            // because the fft is returned in dB which has very large negative values and some large positive values
+            
+            
             graph.addGraph(withName: "fft",
                            shouldNormalizeForFFT: true,
                            numPointsInGraph: AudioConstants.AUDIO_BUFFER_SIZE / 2)
@@ -51,7 +57,9 @@ class ModuleAViewController: UIViewController {
 
         audio.startMicrophoneProcessingA(withFps: 20)
         audio.play()
-
+                   
+        
+        // run the loop for updating the graph peridocially
         Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
             self.updateGraph()
         }
