@@ -1,79 +1,100 @@
 //
-//  ModuleBViewController.swift
+//  ModuleBViewControllerV2.swift
 //  Lab2_MobileApps
 //
-//  Created by Keaton Harvey on 10/8/24.
+//  Created by Keaton Harvey on 10/10/24.
 //
+
+
+// MARK: Change slider back to 17,000 - 20,000 after done testing
 
 import UIKit
 
 class ModuleBViewController: UIViewController {
     
     @IBOutlet weak var userView: UIView!
-    struct AudioConstants{
-            static let AUDIO_BUFFER_SIZE = 1024*4
+    @IBOutlet weak var labelF: UILabel!
+    @IBOutlet weak var gestureStatusLabel: UILabel!
+    @IBAction func sliderF(_ sender: UISlider) {
+            frequency = sender.value
+            audio.updateBaselineFrequency(frequency)
         }
     
+    
+    struct AudioConstants{
+            static let AUDIO_BUFFER_SIZE = 1024*8
+        }
     let audio = AudioModel(buffer_size: AudioConstants.AUDIO_BUFFER_SIZE)
     lazy var graph:MetalGraph? = {
             return MetalGraph(userView: self.userView)
         }()
+    
     var timer:Timer? = nil
-    
     var frequency:Float = 300 {
-            didSet{
-                audio.sineFrequency = frequency
-                labelF.text = "Frequency: \(frequency)"
-            }
+        didSet {
+            audio.sineFrequency = frequency
+            labelF.text = "Frequency: \(frequency)"
         }
-    @IBOutlet weak var labelF: UILabel!
-    @IBAction func sliderF(_ sender: UISlider) {
-            frequency = sender.value
-        }
-    
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        frequency = 18500
+        frequency = 18000
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let graph = self.graph{
-                    graph.setBackgroundColor(r: 0, g: 0, b: 0, a: 1)
-                    
-                    // add in graphs for display
-                    // note that we need to normalize the scale of this graph
-                    // because the fft is returned in dB which has very large negative values and some large positive values
-                    
-                    graph.addGraph(withName: "fftZoomed",
-                                    shouldNormalizeForFFT: true,
-                                    numPointsInGraph: 300) // 300 points to display
-                    
-                    graph.makeGrids() // add grids to graph
-                }
-        audio.startMicrophoneProcessing(withFps: 20)
+        if let graph = self.graph {
+            graph.setBackgroundColor(r: 0.0, g: 0.0, b: 0.0, a: 1.0)
+            
+            graph.addGraph(withName: "fftZoomed",
+                            shouldNormalizeForFFT: true,
+                            numPointsInGraph: 300) // 300 points to display
+            
+            graph.addGraph(withName: "fft",
+                            shouldNormalizeForFFT: true,
+                            numPointsInGraph: AudioConstants.AUDIO_BUFFER_SIZE/2)
+            
+            graph.addGraph(withName: "time",
+                numPointsInGraph: AudioConstants.AUDIO_BUFFER_SIZE)
+            
+            graph.makeGrids()
+        }
+        audio.startMicrophoneProcessingB(withFps: 20)
         audio.play()
+        
         timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
             self.updateGraph()
+            self.detectGesture()
         }
     }//end of viewWillAppear
     
-    override func viewWillDisappear(_ animated: Bool) {
-            super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        
         timer?.invalidate()
         graph?.teardown()
         graph = nil
-        audio.pause()
+        audio.stop()
         super.viewDidDisappear(animated)
-        }
+    }
+    
     
     func updateGraph(){
         
         if let graph = self.graph{
-            // Show the zoomed FFT
+            graph.updateGraph(
+                data: self.audio.fftData,
+                forKey: "fft"
+            )
+            
+            graph.updateGraph(
+                data: self.audio.timeData,
+                forKey: "time"
+            )
+            
+            // BONUS: show the zoomed FFT
             // we can start at about 150Hz and show the next 300 points
             // actual Hz = f_0 * N/F_s
             let minfreq = frequency
@@ -81,12 +102,21 @@ class ModuleBViewController: UIViewController {
             let subArray:[Float] = Array(self.audio.fftData[startIdx...startIdx+300])
             graph.updateGraph(
                 data: subArray,
-                forKey: "fftZoomed"
-            )
-            
-            
+                forKey: "fftZoomed")
         }
     }
     
+    
+    func detectGesture() {
+        let gesture = audio.detectGesture()
+        switch gesture {
+            case .toward:
+                gestureStatusLabel.text = "Gesture: Toward Microphone"
+            case .away:
+                gestureStatusLabel.text = "Gesture: Away from Microphone"
+            case .none:
+                gestureStatusLabel.text = "Gesture: No Movement"
+            }
+        }
     
 }//end of class

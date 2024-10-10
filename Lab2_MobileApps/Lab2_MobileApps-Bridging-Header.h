@@ -9,3 +9,4 @@
 #import "AudioFileReader.h"
 #import "CircularBuffer.h"
 #import "FFTHelper.h"
+#import "PeakFinder.h"

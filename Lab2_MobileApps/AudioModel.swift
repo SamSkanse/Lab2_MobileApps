@@ -2,10 +2,9 @@
 //  AudioModel.swift
 //  AudioLabSwift
 //
-//  Created by Eric Larson 
+//  Created by Eric Larson
 //  Copyright © 2020 Eric Larson. All rights reserved.
 //
-
 
 
 import Foundation
@@ -22,7 +21,26 @@ class AudioModel {
     lazy var samplingRate:Int = {
         return Int(self.audioManager!.samplingRate)
     }()
+    
     var sineFrequency:Float = 300.0
+    private var frequencyDeltaThreshold: Float = 15.0
+    private var baselineFrequency: Float = 0.0
+    private var previousFrequency: Float = 0.0
+    private var frequencyBuffer: [Float] = []
+    private var baselineSet: Bool = false
+    
+    enum Gesture {
+            case toward
+            case away
+            case none
+        }
+    
+    private var phase:Float = 0.0
+    private var phaseIncrement:Float = 0.0
+    private var sineWaveRepeatMax:Float = Float(2*Double.pi)
+    var pulsing:Bool = false
+    private var pulseValue:Int = 0
+    
     
     // MARK: Public Methods
     init(buffer_size:Int) {
@@ -33,10 +51,25 @@ class AudioModel {
     }
     
     // public function for starting processing of microphone data
-    func startMicrophoneProcessing(withFps:Double){
+    func startMicrophoneProcessingA(withFps:Double){
         // setup the microphone to copy to circualr buffer
-        if let manager = self.audioManager{
+                if let manager = self.audioManager{
+                    manager.inputBlock = self.handleMicrophone
+                    
+                    // repeat this fps times per second using the timer class
+                    //   every time this is called, we update the arrays "timeData" and "fftData"
+                    Timer.scheduledTimer(withTimeInterval: 1.0/withFps, repeats: true) { _ in
+                        self.runEveryInterval()
+                    }
+                }
+    }
+    
+    func startMicrophoneProcessingB(withFps:Double){
+        // setup the microphone to copy to circualr buffer
+        if let manager = self.audioManager,
+            let fileReader = self.fileReader{
             manager.inputBlock = self.handleMicrophone
+            manager.outputBlock = self.handleSpeakerQueryWithSinusoids
             
             // repeat this fps times per second using the timer class
             //   every time this is called, we update the arrays "timeData" and "fftData"
@@ -44,8 +77,71 @@ class AudioModel {
                 self.runEveryInterval()
             }
             
+            Timer.scheduledTimer(withTimeInterval: 1.0/5.0, repeats: true) { _ in
+                // set to opposite
+                self.pulseValue += 1
+                if self.pulseValue > 5{
+                    self.pulseValue = 0
+                }
+            }
+            fileReader.play()
         }
     }
+    
+    func detectGesture() -> Gesture {
+        guard baselineSet else { return .none }
+        
+        // Get current dominant frequency from FFT
+        let currentFrequency = estimateDominantFrequency()
+        
+        // Calculate the frequency shift relative to the baseline
+        let delta = currentFrequency - baselineFrequency
+        
+        // Detect toward or away gestures based on the threshold
+        if delta > frequencyDeltaThreshold {
+            return .toward
+        } else if delta < -frequencyDeltaThreshold {
+            return .away
+        } else {
+            return .none
+        }
+    }
+    
+    private func estimateDominantFrequency() -> Float {
+        let minFrequency = 17000 // 17 kHz minimum
+        let maxFrequency = 20000 // 20 kHz maximum
+        
+        let minIndex = Int(minFrequency * BUFFER_SIZE / samplingRate)
+        let maxIndex = Int(maxFrequency * BUFFER_SIZE / samplingRate)
+        
+        var dominantIndex = minIndex // Renamed from maxIndex to avoid conflict
+        var maxValue = fftData[minIndex]
+        
+        for index in minIndex...maxIndex where fftData[index] > maxValue {
+            maxValue = fftData[index]
+            dominantIndex = index
+        }
+        
+        return Float(dominantIndex) * Float(samplingRate) / Float(BUFFER_SIZE)
+    }
+    
+    func updateBaselineFrequency(_ frequency: Float) {
+        baselineFrequency = frequency
+        previousFrequency = frequency // Reset previous to prevent false detections
+        frequencyBuffer.removeAll() // Clear any past readings in the buffer
+        baselineSet = true
+    }
+    
+    private func movingAverageFrequency(currentFrequency: Float) -> Float {
+        // Add new frequency to buffer, limit buffer size to 10
+        frequencyBuffer.append(currentFrequency)
+        if frequencyBuffer.count > 10 {
+            frequencyBuffer.removeFirst()
+        }
+        // Calculate the average of the buffer
+        return frequencyBuffer.reduce(0, +) / Float(frequencyBuffer.count)
+    }
+    
     
     
     // You must call this when you want the audio to start being handled by our model
@@ -55,12 +151,24 @@ class AudioModel {
         }
     }
     
-    func pause(){
+    func stop(){
         if let manager = self.audioManager{
             manager.pause()
             manager.inputBlock = nil
             manager.outputBlock = nil
         }
+        
+        if let file = self.fileReader{
+            file.pause()
+            file.stop()
+        }
+        
+        if let buffer = self.inputBuffer{
+            buffer.clear() // just makes zeros
+        }
+        inputBuffer = nil
+        fftHelper = nil
+        fileReader = nil
     }
     
     
@@ -79,6 +187,26 @@ class AudioModel {
         return CircularBuffer.init(numChannels: Int64(self.audioManager!.numInputChannels),
                                    andBufferSize: Int64(BUFFER_SIZE))
     }()
+    
+    private lazy var fileReader:AudioFileReader? = {
+            // find song in the main Bundle
+            if let url = Bundle.main.url(forResource: "satisfaction", withExtension: "mp3"){
+                // if we could find the url for the song in main bundle, setup file reader
+                // the file reader is doing a lot here becasue its a decoder
+                // so when it decodes the compressed mp3, it needs to know how many samples
+                // the speaker is expecting and how many output channels the speaker has (mono, left/right, surround, etc.)
+                var tmpFileReader:AudioFileReader? = AudioFileReader.init(audioFileURL: url,
+                                                       samplingRate: Float(audioManager!.samplingRate),
+                                                       numChannels: audioManager!.numOutputChannels)
+                
+                tmpFileReader!.currentTime = 0.0 // start from time zero!
+                
+                return tmpFileReader
+            }else{
+                print("Could not initialize audio input file")
+                return nil
+            }
+        }()
     
     
     //==========================================
@@ -113,6 +241,57 @@ class AudioModel {
         // copy samples from the microphone into circular buffer
         self.inputBuffer?.addNewFloatData(data, withNumSamples: Int64(numFrames))
     }
+    
+    
+    private func handleSpeakerQueryWithSinusoids(data:Optional<UnsafeMutablePointer<Float>>, numFrames:UInt32, numChannels: UInt32){
+            if let arrayData = data, let manager = self.audioManager{
+                
+                var addFreq:Float = 0
+                var mult:Float = 1.0
+                if pulsing && pulseValue==1{
+                    addFreq = 1000.0
+                }else if pulsing && pulseValue > 1{
+                    mult = 0.0
+                }
+                
+                if let file = self.fileReader{
+                    // get samples from audio file, pass array by reference
+                    file.retrieveFreshAudio(arrayData,
+                                numFrames: numFrames,
+                                numChannels: numChannels)
+                    
+                    // adjust volume of audio file output
+                    var volume:Float = mult*0.15 // zero out song also, if needed
+                    vDSP_vsmul(arrayData, 1, &(volume), arrayData, 1, vDSP_Length(numFrames*numChannels))
+                                    
+                }
+                
+                phaseIncrement = Float(2*Double.pi*Double(sineFrequency+addFreq)/manager.samplingRate)
+                
+                
+                var i = 0
+                let chan = Int(numChannels)
+                let frame = Int(numFrames)
+                if chan==1{
+                    while i<frame{
+                        arrayData[i] += (0.9*sin(phase))*mult
+                        phase += phaseIncrement
+                        if (phase >= sineWaveRepeatMax) { phase -= sineWaveRepeatMax }
+                        i+=1
+                    }
+                }else if chan==2{
+                    let len = frame*chan
+                    while i<len{
+                        arrayData[i] += (0.9*sin(phase))*mult
+                        arrayData[i+1] = arrayData[i]
+                        phase += phaseIncrement
+                        if (phase >= sineWaveRepeatMax) { phase -= sineWaveRepeatMax }
+                        i+=2
+                    }
+                }
+                
+            }
+        }
     
     
 }
