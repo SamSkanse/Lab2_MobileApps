@@ -127,8 +127,8 @@
                     <navigationItem key="navigationItem" id="6Gk-Sw-r5X"/>
                     <connections>
                         <outlet property="Highest" destination="z8G-T4-dzi" id="U0a-E7-RZH"/>
-                        <outlet property="Highest200ms" destination="enk-nB-AXE" id="ZgC-IU-9Pf"/>
                         <outlet property="SecondHighest" destination="Eab-jw-Qer" id="cJI-gG-bmS"/>
+                        <outlet property="highest200ms" destination="enk-nB-AXE" id="9Kf-qy-dfT"/>
                         <outlet property="secondHighest200ms" destination="onb-8o-krH" id="JaI-Eu-Ozg"/>
                         <outlet property="userView" destination="ff2-R6-CuZ" id="3OB-mC-yoK"/>
                     </connections>
@@ -180,6 +180,13 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3tf-oo-zVj">
+                                <rect key="frame" x="64" y="767" width="277" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="p2U-vg-euy"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -188,6 +195,7 @@
                     <connections>
                         <outlet property="gestureStatusLabel" destination="8ut-uc-tJh" id="HX8-VA-mAC"/>
                         <outlet property="labelF" destination="akL-1M-jyY" id="Ckb-YC-dlS"/>
+                        <outlet property="labelFFT" destination="3tf-oo-zVj" id="GGb-lD-STA"/>
                         <outlet property="userView" destination="a0V-82-Nmz" id="yBH-uI-c7h"/>
                     </connections>
                 </viewController>

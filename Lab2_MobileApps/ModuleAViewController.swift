@@ -27,7 +27,6 @@ class ModuleAViewController: UIViewController {
     @IBOutlet weak var highest200ms: UILabel!
     @IBOutlet weak var secondHighest200ms: UILabel!
     
-    let peakFinder = PeakFinder(frequencyResolution: 44100.0)
     var highSigFreq:Int?
     var secondSigFreq:Int?
     var lastHighestFrequency: Int? = nil
@@ -151,7 +150,7 @@ class ModuleAViewController: UIViewController {
             }
             
             // Check if the frequency has been stable for at least 0.2 seconds
-            if let startTime = stableHighestStartTime, currentTime.timeIntervalSince(startTime) >= 0.2 {
+            if let startTime = stableHighestStartTime, currentTime.timeIntervalSince(startTime) >= 0.1 {
                 // Frequency is stable for over 200 ms, update the label
                 self.highest200ms.text = String(frequency)
             }
