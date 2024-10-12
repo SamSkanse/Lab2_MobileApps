@@ -146,9 +146,9 @@ class ModuleAViewController: UIViewController {
                 stableHighestStartTime = currentTime
             }
             
-            // Check if the frequency has been stable for at least 0.2 seconds
+            // Check if the frequency has been stable for at least 0.18 seconds
             if let startTime = stableHighestStartTime, currentTime.timeIntervalSince(startTime) >= 0.18 {
-                // Frequency is stable for over 200 ms, update the label
+                // Frequency is stable for over 180 ms, update the label
                 self.highest200ms.text = String(frequency)
             }
         } else {
@@ -168,9 +168,9 @@ class ModuleAViewController: UIViewController {
                     stableStartTimeSecondHighest = currentTime
                 }
                 
-                // Check if the second-highest frequency has been stable for at least 0.1 seconds
-                if let startTime = stableStartTimeSecondHighest, currentTime.timeIntervalSince(startTime) >= 0.1 {
-                    // Frequency is stable for over 100 ms, update the label (we changed this to 0.1 to lower the threshold because there are a lot of calculations going on before this timer
+                // Check if the second-highest frequency has been stable for at least 0.12 seconds
+                if let startTime = stableStartTimeSecondHighest, currentTime.timeIntervalSince(startTime) >= 0.12 {
+                    // Frequency is stable for over 120 ms, update the label (we changed this to 0.12 to lower the threshold because there are a lot of calculations going on before this timer
                     self.secondHighest200ms.text = String(frequency)
                 }
             } else {
