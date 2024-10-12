@@ -10,6 +10,7 @@ class ModuleAViewController: UIViewController {
     @IBOutlet weak var Highest: UILabel!
     @IBOutlet weak var highest200ms: UILabel!
     @IBOutlet weak var secondHighest200ms: UILabel!
+    @IBOutlet weak var quietestDetectable: UILabel!
     
     var highSigFreq:Int?
     var secondSigFreq:Int?
@@ -83,6 +84,19 @@ class ModuleAViewController: UIViewController {
     
   
     func updateHighestFrequencyLabels() {
+        
+        //check for the min value in fftData
+        if let minValue = self.audio.fftData.min(), minValue > -0.5 {
+            //ignore this
+        } else if let minValue = self.audio.fftData.min(),
+                  let minIndex = self.audio.fftData.firstIndex(of: minValue) {
+            
+            //Calculate the frequency for the min value
+            let frequencyMinIndex: Int = minIndex * 48000 / 8192
+            self.quietestDetectable.text = String(frequencyMinIndex)
+        }
+        
+        
         //Check if there's a max value in the fftData
         if let maxValue = self.audio.fftData.max(), maxValue < -0.5 {
             self.Highest.text = "Noise"

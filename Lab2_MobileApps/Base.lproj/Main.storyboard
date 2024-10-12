@@ -92,8 +92,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="onb-8o-krH">
-                                <rect key="frame" x="17" y="741" width="162" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="onb-8o-krH">
+                                <rect key="frame" x="16" y="725" width="162" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="162" id="b7T-fY-Zrb"/>
                                 </constraints>
@@ -102,13 +102,25 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enk-nB-AXE">
-                                <rect key="frame" x="202" y="742" width="190" height="21"/>
+                                <rect key="frame" x="203" y="725" width="190" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Second Largest " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Al0-Sd-nvs">
                                 <rect key="frame" x="16" y="625" width="123" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Quietest Detectable Frequency" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vq9-aW-rOu">
+                                <rect key="frame" x="43" y="754" width="307" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a9H-t0-b9d">
+                                <rect key="frame" x="122" y="783" width="149" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -120,24 +132,29 @@
                             <constraint firstItem="6B0-0N-Q7T" firstAttribute="centerX" secondItem="ff2-R6-CuZ" secondAttribute="centerX" id="2Bg-cg-iM7"/>
                             <constraint firstItem="6B0-0N-Q7T" firstAttribute="top" secondItem="ff2-R6-CuZ" secondAttribute="bottom" constant="29" id="2wD-hO-TOL"/>
                             <constraint firstItem="ff2-R6-CuZ" firstAttribute="top" secondItem="0ff-x7-eB8" secondAttribute="top" id="6hL-pv-Lza"/>
+                            <constraint firstItem="0ff-x7-eB8" firstAttribute="bottom" secondItem="a9H-t0-b9d" secondAttribute="bottom" constant="14" id="7PY-Pj-za1"/>
                             <constraint firstItem="onb-8o-krH" firstAttribute="centerX" secondItem="Eab-jw-Qer" secondAttribute="centerX" id="BR8-VF-KUK"/>
                             <constraint firstItem="Al0-Sd-nvs" firstAttribute="leading" secondItem="ff2-R6-CuZ" secondAttribute="leading" id="BuT-cY-5GG"/>
+                            <constraint firstItem="a9H-t0-b9d" firstAttribute="centerX" secondItem="ncL-gO-Mo7" secondAttribute="centerX" id="Eyh-Yy-MNo"/>
                             <constraint firstItem="Al0-Sd-nvs" firstAttribute="baseline" secondItem="UDW-cc-a9N" secondAttribute="baseline" id="H7z-Qa-vje"/>
-                            <constraint firstItem="enk-nB-AXE" firstAttribute="leading" secondItem="onb-8o-krH" secondAttribute="trailing" constant="24" id="Kdr-pZ-a5H"/>
+                            <constraint firstItem="a9H-t0-b9d" firstAttribute="leading" secondItem="0ff-x7-eB8" secondAttribute="leading" constant="122" id="JXP-4m-SPh"/>
+                            <constraint firstItem="enk-nB-AXE" firstAttribute="leading" secondItem="onb-8o-krH" secondAttribute="trailing" constant="25" id="Kdr-pZ-a5H"/>
                             <constraint firstItem="Eab-jw-Qer" firstAttribute="top" secondItem="Al0-Sd-nvs" secondAttribute="bottom" constant="7" id="OjG-YB-aia"/>
-                            <constraint firstItem="enk-nB-AXE" firstAttribute="top" secondItem="ncL-gO-Mo7" secondAttribute="bottom" constant="25" id="Pti-to-9rV"/>
+                            <constraint firstItem="enk-nB-AXE" firstAttribute="top" secondItem="ncL-gO-Mo7" secondAttribute="bottom" constant="8" id="Pti-to-9rV"/>
                             <constraint firstItem="ncL-gO-Mo7" firstAttribute="top" secondItem="z8G-T4-dzi" secondAttribute="bottom" constant="21" id="VWQ-fB-JNX"/>
                             <constraint firstItem="z8G-T4-dzi" firstAttribute="leading" secondItem="UDW-cc-a9N" secondAttribute="leading" id="Xgj-4Q-QfR"/>
-                            <constraint firstItem="z8G-T4-dzi" firstAttribute="trailing" secondItem="enk-nB-AXE" secondAttribute="trailing" id="aGr-Mz-Rfq"/>
-                            <constraint firstItem="onb-8o-krH" firstAttribute="top" secondItem="ncL-gO-Mo7" secondAttribute="bottom" constant="24" id="c3B-lo-CV3"/>
+                            <constraint firstItem="a9H-t0-b9d" firstAttribute="centerX" secondItem="Vq9-aW-rOu" secondAttribute="centerX" id="Yvy-fZ-6y9"/>
+                            <constraint firstItem="z8G-T4-dzi" firstAttribute="trailing" secondItem="enk-nB-AXE" secondAttribute="trailing" constant="-1" id="aGr-Mz-Rfq"/>
+                            <constraint firstItem="onb-8o-krH" firstAttribute="top" secondItem="ncL-gO-Mo7" secondAttribute="bottom" constant="8" id="c3B-lo-CV3"/>
                             <constraint firstItem="Al0-Sd-nvs" firstAttribute="leading" secondItem="Eab-jw-Qer" secondAttribute="leading" id="dvL-W2-MnP"/>
                             <constraint firstItem="z8G-T4-dzi" firstAttribute="leading" secondItem="Eab-jw-Qer" secondAttribute="trailing" constant="24" id="e5y-TS-m2N"/>
-                            <constraint firstItem="z8G-T4-dzi" firstAttribute="leading" secondItem="enk-nB-AXE" secondAttribute="leading" id="gvs-oZ-UBf"/>
+                            <constraint firstItem="z8G-T4-dzi" firstAttribute="leading" secondItem="enk-nB-AXE" secondAttribute="leading" constant="-1" id="gvs-oZ-UBf"/>
                             <constraint firstItem="z8G-T4-dzi" firstAttribute="top" secondItem="UDW-cc-a9N" secondAttribute="bottom" constant="8" id="hsk-ho-kEZ"/>
                             <constraint firstItem="ff2-R6-CuZ" firstAttribute="leading" secondItem="0ff-x7-eB8" secondAttribute="leading" constant="16" id="iC8-lG-GLG"/>
                             <constraint firstItem="0ff-x7-eB8" firstAttribute="trailing" secondItem="ff2-R6-CuZ" secondAttribute="trailing" constant="16" id="izh-dP-BR2"/>
                             <constraint firstItem="6B0-0N-Q7T" firstAttribute="centerX" secondItem="ncL-gO-Mo7" secondAttribute="centerX" id="lmo-kD-qjf"/>
                             <constraint firstItem="UDW-cc-a9N" firstAttribute="leading" secondItem="Al0-Sd-nvs" secondAttribute="trailing" constant="63" id="oHf-zM-k86"/>
+                            <constraint firstItem="a9H-t0-b9d" firstAttribute="top" secondItem="Vq9-aW-rOu" secondAttribute="bottom" constant="8" id="xiD-HY-Oae"/>
                             <constraint firstItem="UDW-cc-a9N" firstAttribute="top" secondItem="6B0-0N-Q7T" secondAttribute="bottom" constant="20" id="yfZ-fp-WVq"/>
                         </constraints>
                     </view>
@@ -146,6 +163,7 @@
                         <outlet property="Highest" destination="z8G-T4-dzi" id="U0a-E7-RZH"/>
                         <outlet property="SecondHighest" destination="Eab-jw-Qer" id="cJI-gG-bmS"/>
                         <outlet property="highest200ms" destination="enk-nB-AXE" id="9Kf-qy-dfT"/>
+                        <outlet property="quietestDetectable" destination="a9H-t0-b9d" id="uMO-56-GXR"/>
                         <outlet property="secondHighest200ms" destination="onb-8o-krH" id="JaI-Eu-Ozg"/>
                         <outlet property="userView" destination="ff2-R6-CuZ" id="3OB-mC-yoK"/>
                     </connections>

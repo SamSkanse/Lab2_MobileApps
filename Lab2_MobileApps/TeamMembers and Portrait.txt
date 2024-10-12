@@ -2,3 +2,5 @@ Team Members:
 
 Keaton Harvey
 Sam Skanse
+
+App is only setup to work in portrait
