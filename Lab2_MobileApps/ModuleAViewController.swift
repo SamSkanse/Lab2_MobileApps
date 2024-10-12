@@ -95,16 +95,16 @@ class ModuleAViewController: UIViewController {
             self.Highest.text = String(frequencyMaxIndex)
             test200mslengthHighest(frequency: frequencyMaxIndex)
 
-            // Step 3: Exclude indexes around maxIndex (±7)
+            //Exclude indexes around maxIndex (±6)
             let startExcludeIndex = max(maxIndex - 6, 0)
             let endExcludeIndex = min(maxIndex + 6, self.audio.fftData.count - 1)
 
-            // Filter out the values around maxIndex (±7)
+            // Filter out the values around maxIndex (±6)
             let filteredData = self.audio.fftData.enumerated().filter { (index, value) in
                 return index < startExcludeIndex || index > endExcludeIndex
             }.map { $0.element } // Extract the values from the enumerated result
 
-            // Step 4: Find the second highest value and its index
+            //Find the second highest value and its index
             if let secondMaxValue = filteredData.max(),
                let secondMaxIndexInFiltered = filteredData.firstIndex(of: secondMaxValue) {
                 
