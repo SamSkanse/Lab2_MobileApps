@@ -18,8 +18,8 @@ class ModuleBViewController: UIViewController {
     @IBAction func sliderF(_ sender: UISlider) {
         frequency = sender.value
         audio.updateBaselineFrequency(frequency)
-        leftOfFreq = frequency - 20
-        rightOfFreq = frequency + 20
+        leftOfFreq = frequency - 60
+        rightOfFreq = frequency
         resetDetectionValues()  // Reset compare values for new frequency
     }
     
@@ -91,16 +91,20 @@ class ModuleBViewController: UIViewController {
             graph.updateGraph(data: self.audio.fftData, forKey: "fft")
             graph.updateGraph(data: self.audio.timeData, forKey: "time")
             
+            //generate subarray for for fftZoomed
             let startIdx = (Int(frequency) - 900) * AudioConstants.AUDIO_BUFFER_SIZE / audio.samplingRate
             let endIdx = min(startIdx + 300, self.audio.fftData.count - 1)
             let subArray = Array(self.audio.fftData[startIdx...endIdx])
             graph.updateGraph(data: subArray, forKey: "fftZoomed")
             
-            let leftStartIndex = Int(leftOfFreq ?? 17980) * AudioConstants.AUDIO_BUFFER_SIZE / audio.samplingRate
-            let leftEndIndex = min(leftStartIndex + 20, self.audio.fftData.count - 1)
+            //generate subarray for left and right of the current frequency
+            //44100/8192 = 5.86Hz per index
+            //10 indices ~ 60Hz range
+            let leftStartIndex = Int(leftOfFreq ?? 17940) * AudioConstants.AUDIO_BUFFER_SIZE / audio.samplingRate
+            let leftEndIndex = min(leftStartIndex + 10, self.audio.fftData.count - 1)
             
-            let rightStartIndex = Int(rightOfFreq ?? 18020) * AudioConstants.AUDIO_BUFFER_SIZE / audio.samplingRate
-            let rightEndIndex = min(rightStartIndex + 20, self.audio.fftData.count - 1)
+            let rightStartIndex = Int(rightOfFreq ?? 18000) * AudioConstants.AUDIO_BUFFER_SIZE / audio.samplingRate
+            let rightEndIndex = min(rightStartIndex + 10, self.audio.fftData.count - 1)
             
             let leftSubArray = Array(self.audio.fftData[leftStartIndex...leftEndIndex])
             let rightSubArray = Array(self.audio.fftData[rightStartIndex...rightEndIndex])
