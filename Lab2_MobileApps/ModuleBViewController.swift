@@ -97,9 +97,9 @@ class ModuleBViewController: UIViewController {
             let subArray = Array(self.audio.fftData[startIdx...endIdx])
             graph.updateGraph(data: subArray, forKey: "fftZoomed")
             
-            //generate subarray for left and right of the current frequency
-            //44100/8192 = 5.86Hz per index
-            //10 indices ~ 60Hz range
+            // generate subarray for left and right of the current frequency
+            // 44100/8192 = 5.86Hz per index
+            // 10 indices ~ 60Hz range
             let leftStartIndex = Int(leftOfFreq ?? 17940) * AudioConstants.AUDIO_BUFFER_SIZE / audio.samplingRate
             let leftEndIndex = min(leftStartIndex + 10, self.audio.fftData.count - 1)
             
@@ -109,11 +109,13 @@ class ModuleBViewController: UIViewController {
             let leftSubArray = Array(self.audio.fftData[leftStartIndex...leftEndIndex])
             let rightSubArray = Array(self.audio.fftData[rightStartIndex...rightEndIndex])
             
+            //find the average value of the left subArray and right subArray for comparison
             let leftAvg = leftSubArray.isEmpty ? 0.0 : leftSubArray.reduce(0, +) / Float(leftSubArray.count)
             let rightAvg = rightSubArray.isEmpty ? 0.0 : rightSubArray.reduce(0, +) / Float(rightSubArray.count)
             
             let threshold: Float = 1.75  // Adjusted threshold for sensitivity
             
+            //do the comparison and update gestureText
             if let prevLeftAvg = previousLeftAvg, leftAvg > prevLeftAvg + threshold {
                 gestureText = "Gesture: Detected - Moving Away"
             } else if let prevRightAvg = previousRightAvg, rightAvg > prevRightAvg + threshold {
