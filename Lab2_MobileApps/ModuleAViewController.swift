@@ -1,22 +1,6 @@
-//
-//  ViewController.swift
-//  AudioLabSwift
-//
-//  Created by Eric Larson
-//  Copyright © 2020 Eric Larson. All rights reserved.
-//
-
-/*TODO!!! figure out how to call the function getFundamentalPeaksFromBuffer in order to get the peaks to
- to output to labels
- */
-
 
 import UIKit
 import Metal
-
-
-
-
 
 class ModuleAViewController: UIViewController {
     
@@ -98,16 +82,15 @@ class ModuleAViewController: UIViewController {
     }
     
   
-    
     func updateHighestFrequencyLabels() {
-        // Step 1: Check if there's a max value in the fftData
+        //Check if there's a max value in the fftData
         if let maxValue = self.audio.fftData.max(), maxValue < -0.5 {
             self.Highest.text = "Noise"
             self.SecondHighest.text = "Noise"
         } else if let maxValue = self.audio.fftData.max(),
                   let maxIndex = self.audio.fftData.firstIndex(of: maxValue) {
 
-            // Step 2: Calculate the frequency for the max value
+            //Calculate the frequency for the max value
             let frequencyMaxIndex: Int = maxIndex * 48000 / 8192
             self.Highest.text = String(frequencyMaxIndex)
             test200mslengthHighest(frequency: frequencyMaxIndex)
@@ -150,7 +133,7 @@ class ModuleAViewController: UIViewController {
             }
             
             // Check if the frequency has been stable for at least 0.2 seconds
-            if let startTime = stableHighestStartTime, currentTime.timeIntervalSince(startTime) >= 0.1 {
+            if let startTime = stableHighestStartTime, currentTime.timeIntervalSince(startTime) >= 0.18 {
                 // Frequency is stable for over 200 ms, update the label
                 self.highest200ms.text = String(frequency)
             }
@@ -171,9 +154,9 @@ class ModuleAViewController: UIViewController {
                     stableStartTimeSecondHighest = currentTime
                 }
                 
-                // Check if the second-highest frequency has been stable for at least 0.2 seconds
-                if let startTime = stableStartTimeSecondHighest, currentTime.timeIntervalSince(startTime) >= 0.2 {
-                    // Frequency is stable for over 200 ms, update the label
+                // Check if the second-highest frequency has been stable for at least 0.1 seconds
+                if let startTime = stableStartTimeSecondHighest, currentTime.timeIntervalSince(startTime) >= 0.1 {
+                    // Frequency is stable for over 100 ms, update the label (we changed this to 0.1 to lower the threshold because there are a lot of calculations going on before this timer
                     self.secondHighest200ms.text = String(frequency)
                 }
             } else {
