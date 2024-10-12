@@ -1,11 +1,3 @@
-//
-//  ModuleBViewController.swift
-//  Lab2_MobileApps
-//
-//  Created by Keaton Harvey on 10/10/24.
-//
-// MARK: Change slider back to 17,000 - 20,000 after done testing
-
 import UIKit
 
 class ModuleBViewController: UIViewController {
@@ -13,8 +5,6 @@ class ModuleBViewController: UIViewController {
     @IBOutlet weak var userView: UIView!
     @IBOutlet weak var labelF: UILabel!
     @IBOutlet weak var gestureStatusLabel: UILabel!
-    @IBOutlet weak var labelFFT: UILabel!
-    
     @IBAction func sliderF(_ sender: UISlider) {
         frequency = sender.value
         audio.updateBaselineFrequency(frequency)
@@ -128,7 +118,7 @@ class ModuleBViewController: UIViewController {
             previousLeftAvg = leftAvg
             previousRightAvg = rightAvg
             
-            // Call the new function to handle label update with delay
+            // Call the new function to handle label update
             updateGestureLabel()
         }
     }
